@@ -19,12 +19,7 @@ module.exports = {
         ],
       },      {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-          }
-          // other vue-loader options go here
-        }
+        loader: 'vue-loader'
       },
       {
         test: /\.js$/,
@@ -47,12 +42,10 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin()
   ],
-  optimization: {
-    minimize: process.env.NODE_ENV === 'production'
-  }
 }
 
 if (process.env.NODE_ENV === 'production') {
+  module.exports.mode = 'production'
   module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
@@ -65,4 +58,10 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     })
   ])
+}
+if (process.env.ENTRY_FILE) {
+  module.exports.entry = process.env.ENTRY_FILE
+}
+if (process.env.OUT_FILE) {
+  module.exports.output.filename = process.env.OUT_FILE
 }
