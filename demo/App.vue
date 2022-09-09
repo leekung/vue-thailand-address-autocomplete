@@ -5,21 +5,24 @@
     </a>
     <ThailandAutoComplete
       v-model="district"
+      :value="district"
+      class="form-control"
       type="district"
       @select="select"
       label="ตำบล"
       color="#42b883"
       size="small"
-      placeholder="ตำบล..."/>
-    <ThailandAutoComplete v-model="amphoe" type="amphoe" @select="select" label="อำเภอ" placeholder="อำเภอ..."/>
-    <ThailandAutoComplete v-model="province" type="province" @select="select" label="จังหวัด" size="medium" color="#35495e" placeholder="จังหวัด..."/>
-    <ThailandAutoComplete v-model="zipcode" type="zipcode" @select="select" size="large" color="#00a4e4" placeholder="รหัสไปรษณีย์..."/> 
+      placeholder="ตำบล..."
+    />
+    <ThailandAutoComplete v-model="amphoe" :value="amphoe" class="form-control" type="amphoe" @select="select" label="อำเภอ" placeholder="อำเภอ..."/>
+    <ThailandAutoComplete v-model="province" :value="province" class="form-control" type="province" @select="select" label="จังหวัด" size="medium" color="#35495e" placeholder="จังหวัด..."/>
+    <ThailandAutoComplete v-model="zipcode" :value="zipcode" class="form-control" type="zipcode" @select="select" label="รหัสไปรษณีย์" size="large" color="#00a4e4" placeholder="รหัสไปรษณีย์..."/>
   </div>
 </template>
 
 <script>
 // import ThailandAutoComplete from '../dist/vue-thailand-address-autocomplete.min.js'
-import ThailandAutoComplete from '../src/vue-thailand-address-autocomplete'
+import ThailandAutoComplete from '../src/vue-thailand-address-autocomplete.vue'
 
 export default {
   name: 'app',

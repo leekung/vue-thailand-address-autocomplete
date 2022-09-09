@@ -5,12 +5,7 @@
       <input type="text"
       v-model="currentValue"
       :placeholder="placeholder"
-      :class="{
-        'vth-addr-input-size-small': size === 'small',
-        'vth-addr-input-size-default': size === 'default',
-        'vth-addr-input-size-medium': size === 'medium',
-        'vth-addr-input-size-large': size === 'large'
-      }"
+      :class="additionalClass"
       :style="{
         'border': hasFocus && currentColor !== '#f5f5f5' ? 'solid 1px ' + currentColor : 'solid 1px #d3d3d3'
       }"
@@ -70,6 +65,9 @@ export default {
     value: {
       type: [String, Number]
     },
+    class: {
+      type: String
+    },
     type: {
       type: String
     },
@@ -89,9 +87,10 @@ export default {
   },
   data () {
     return {
-      currentValue: this.value,
+      currentValue: this.value || '',
       currentColor: this.color || '#f5f5f5',
       itemOnFocus: 0,
+      cssClass: this.class || '',
       isOpenListContainer: false,
       hasFocus: false
     }
@@ -100,6 +99,13 @@ export default {
     clickOutside: vClickOutside.directive
   },
   computed: {
+    additionalClass () {
+      if (this.size === 'small') return `vth-addr-input-size-small ${this.cssClass}`
+      if (this.size === 'default') return `vth-addr-input-size-default ${this.cssClass}`
+      if (this.size === 'medium') return `vth-addr-input-size-medium ${this.cssClass}`
+      if (this.size === 'large') return `vth-addr-input-size-large ${this.cssClass}`
+      return this.cssClass
+    },
     resultsFromSearch () {
       if (this.type) {
         if (this.type === 'district') return this.resultsFromSearchByDistrict
@@ -112,16 +118,16 @@ export default {
       }
     },
     resultsFromSearchByDistrict () {
-      return searchAddressByDistrict(this.currentValue)
+      return this.currentValue ? searchAddressByDistrict(this.currentValue) : []
     },
     resultsFromSearchByAmphoe () {
-      return searchAddressByAmphoe(this.currentValue)
+      return this.currentValue ? searchAddressByAmphoe(this.currentValue) : []
     },
     resultsFromSearchByProvince () {
-      return searchAddressByProvince(this.currentValue)
+      return this.currentValue ? searchAddressByProvince(this.currentValue) : []
     },
     resultsFromSearchByZipcode () {
-      return searchAddressByZipcode(this.currentValue)
+      return this.currentValue ? searchAddressByZipcode(this.currentValue) : []
     }
   },
   watch: {
@@ -143,7 +149,7 @@ export default {
      * - และซ่อน Dropdown
      */
     value (value) {
-      if (value !== this.currentValue) {
+      if (value && value !== this.currentValue) {
         this.currentValue = value
         this.$nextTick(() => this.isOpenListContainer = false)
       }

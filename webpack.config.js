@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
   entry: './demo/main.js',
@@ -39,21 +40,16 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    },
-    extensions: ['*', '.js', '.vue', '.json']
-  },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: true,
-    overlay: true
-  },
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins: [
+    new VueLoaderPlugin()
+  ],
+  optimization: {
+    minimize: process.env.NODE_ENV === 'production'
+  }
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -63,12 +59,6 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
       }
     }),
     new webpack.LoaderOptionsPlugin({
